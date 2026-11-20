@@ -1,0 +1,19 @@
+:root{--bg:#f3f6ef;--ink:#1c2b21;--leaf:#2f6b3f;--leaf2:#e3efe0;--line:#d5dfcf;--warn:#b4442b;--card:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:"Trebuchet MS",Verdana,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+nav{background:var(--leaf);color:#fff;padding:.7rem 1.2rem;display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap}
+nav b{font-size:1.15rem;margin-right:auto}nav a{color:#fff;text-decoration:none}nav a:hover,nav a:focus{text-decoration:underline}
+main{max-width:1050px;margin:1.2rem auto;padding:0 1rem}
+h1,h2{margin:.2rem 0 .8rem}section{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1rem;margin-bottom:1rem;overflow-x:auto}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line)}th{background:var(--leaf2)}
+input,select{padding:.45rem;border:1px solid #9bb09a;border-radius:4px;font:inherit}
+button,.btn{background:var(--leaf);color:#fff;border:0;border-radius:4px;padding:.5rem .9rem;font:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+button.danger{background:var(--warn)}button.plain,.btn.plain{background:var(--leaf2);color:var(--ink)}
+:focus-visible{outline:3px solid #e0a200;outline-offset:2px}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:end;margin-bottom:.8rem}label{display:flex;flex-direction:column;font-size:.9rem;gap:.2rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.7rem;margin-bottom:1rem}
+.kpi{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--leaf);padding:.7rem;border-radius:6px}
+.kpi span{display:block;font-size:.85rem;color:#4b5d4f}.kpi strong{font-size:1.3rem}
+.flash{padding:.6rem .9rem;border-radius:4px;margin-bottom:.8rem}.flash.ok{background:var(--leaf2)}.flash.error{background:#f7dcd5;color:#6d2111}
+.low{color:var(--warn);font-weight:bold}.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem}
+.login{max-width:340px;margin:12vh auto}.login form{display:flex;flex-direction:column;gap:.7rem}
+@media print{nav,.noprint{display:none}}

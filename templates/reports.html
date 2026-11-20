@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% block title %}Reports{% endblock %}{% block body %}<h1>Reports</h1>
+<section><form class="row"><label>From<input type="date" name="start" value="{{ start }}"></label>
+<label>To<input type="date" name="end" value="{{ end }}"></label><button>Show report</button>
+<label>Chart shows<select id="metric"><option value="revenue">Revenue</option><option value="quantity">Quantity</option></select></label></form></section>
+<div class="kpis">{% for k, v in kpis.items() %}<div class="kpi"><span>{{ k }}</span><strong>{{ v }}</strong></div>{% endfor %}</div>
+<div class="charts"><section><h2>Daily revenue</h2><canvas id="c1"></canvas></section>
+<section><h2>Monthly revenue</h2><canvas id="c2"></canvas></section>
+<section><h2>Top 10 products</h2><canvas id="c3"></canvas></section>
+<section><h2>Category share</h2><canvas id="c4"></canvas></section></div>
+{% macro tbl(title, rows, cols, key) %}<section><h2>{{ title }}</h2>{% if rows %}<table><tr>{% for c in cols %}<th>{{ c }}</th>{% endfor %}</tr>
+{% for r in rows %}<tr>{% for c in cols %}<td>{{ r[c] }}</td>{% endfor %}</tr>{% endfor %}</table>{% else %}<p>No rows for this report.</p>{% endif %}
+<a class="btn plain" href="{{ url_for('export', name=key, start=start, end=end) }}">Export CSV</a></section>{% endmacro %}
+{{ tbl('Daily sales', daily, ['sale_date','revenue','bills'], 'daily') }}
+{{ tbl('Monthly sales', monthly, ['month','revenue','bills'], 'monthly') }}
+{{ tbl('Slow-moving (no sales in 30 days)', slow, ['name','category','stock_qty'], 'slow') }}
+{{ tbl('Low stock', low, ['name','stock_qty','reorder_level'], 'lowstock') }}
+{{ tbl('Expiring within 15 days', exp, ['name','expiry_date','stock_qty'], 'expiry') }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const D={daily:{{ daily|tojson }},monthly:{{ monthly|tojson }},top:{{ top|tojson }},cats:{{ cats|tojson }}};
+const mk=(id,type,labels,data,label)=>new Chart(document.getElementById(id),{type,data:{labels,datasets:[{label,data,backgroundColor:'#2f6b3f',borderColor:'#2f6b3f'}]}});
+mk('c1','line',D.daily.map(r=>r.sale_date),D.daily.map(r=>r.revenue),'Revenue (₹)');
+mk('c2','bar',D.monthly.map(r=>r.month),D.monthly.map(r=>r.revenue),'Revenue (₹)');
+let c3,c4;
+function draw(){const m=document.getElementById('metric').value;[c3,c4].forEach(c=>c&&c.destroy());
+ c3=mk('c3','bar',D.top.map(r=>r.name),D.top.map(r=>r[m]),m);
+ c4=new Chart(document.getElementById('c4'),{type:'doughnut',data:{labels:D.cats.map(r=>r.category),datasets:[{data:D.cats.map(r=>r[m]),
+ backgroundColor:['#2f6b3f','#7aa874','#c9a227','#b4442b','#4a7c8c','#8d6e63','#9bb09a']}]}});}
+document.getElementById('metric').onchange=draw;draw();
+</script>{% endblock %}

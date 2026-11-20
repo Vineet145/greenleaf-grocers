@@ -1,0 +1,7 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}GreenLeaf Grocers{% endblock %}</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head><body>
+{% if session.user_id %}<nav><b>GreenLeaf Grocers</b>
+{% if session.role == 'admin' %}<a href="{{ url_for('index') }}">Dashboard</a><a href="{{ url_for('products') }}">Products</a><a href="{{ url_for('reports_page') }}">Reports</a>{% endif %}
+<a href="{{ url_for('billing_page') }}">Billing</a><a href="{{ url_for('logout') }}">Log out ({{ session.username }})</a></nav>{% endif %}
+<main>{% for cat, m in get_flashed_messages(with_categories=true) %}<div class="flash {{ cat }}" role="alert">{{ m }}</div>{% endfor %}
+{% block body %}{% endblock %}</main></body></html>

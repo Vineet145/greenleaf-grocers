@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block body %}<h1>Products</h1>
+<section><form class="row"><label>Search<input name="q" value="{{ q }}"></label>
+<label>Category<select name="category"><option value="">All</option>{% for c in cats %}<option {{ 'selected' if c == cat }}>{{ c }}</option>{% endfor %}</select></label>
+<button>Search</button><a class="btn plain" href="{{ url_for('product_form') }}">Add product</a></form>
+<form class="row" method="post" action="{{ url_for('product_import') }}" enctype="multipart/form-data"><label>Import from CSV<input type="file" name="file" accept=".csv"></label>
+<button class="plain">Import products</button></form>
+<p>CSV columns: name, category, unit_price, stock_qty, reorder_level, expiry_date</p></section>
+<section><table><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Expiry</th><th></th></tr>
+{% for r in rows %}<tr><td>{{ r.name }}</td><td>{{ r.category }}</td><td>₹{{ '%.2f' % r.unit_price }}</td>
+<td class="{{ 'low' if r.stock_qty <= r.reorder_level }}">{{ r.stock_qty }}</td><td>{{ r.expiry_date or '-' }}</td>
+<td><a href="{{ url_for('product_form', pid=r.product_id) }}">Edit</a>
+<form method="post" action="{{ url_for('product_delete', pid=r.product_id) }}" style="display:inline" onsubmit="return confirm('Delete this product?')"><button class="danger">Delete</button></form></td></tr>
+{% else %}<tr><td colspan="6">No products match. Try a different search or add one.</td></tr>{% endfor %}</table></section>{% endblock %}

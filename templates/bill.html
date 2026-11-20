@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block body %}<section><h1>Bill #{{ sale.sale_id }}</h1>
+<p>{{ sale.sale_date }} {{ sale.sale_time }} · Cashier: {{ sale.username }}</p>
+<table><tr><th>Item</th><th>Qty</th><th>Price</th><th>Amount</th></tr>
+{% for i in items %}<tr><td>{{ i.name }}</td><td>{{ i.quantity }}</td><td>₹{{ '%.2f' % i.price }}</td><td>₹{{ '%.2f' % (i.quantity * i.price) }}</td></tr>{% endfor %}
+<tr><td colspan="3">Discount</td><td>{{ sale.discount }}%</td></tr>
+<tr><th colspan="3">Total</th><th>₹{{ '%.2f' % sale.total_amount }}</th></tr></table>
+<p class="noprint"><button onclick="window.print()">Print or save as PDF</button>
+<a class="btn plain" href="{{ url_for('bill_download', sid=sale.sale_id) }}">Download CSV</a>
+<a class="btn plain" href="{{ url_for('billing_page') }}">New bill</a></p></section>{% endblock %}

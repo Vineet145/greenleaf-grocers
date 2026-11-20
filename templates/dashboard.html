@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block body %}<h1>Dashboard (last 30 days)</h1>
+<div class="kpis">{% for k, v in kpis.items() %}<div class="kpi"><span>{{ k }}</span><strong>{{ v }}</strong></div>{% endfor %}</div>
+<section><h2>Items to reorder</h2>{% if low %}<table><tr><th>Product</th><th>In stock</th><th>Reorder level</th></tr>
+{% for r in low %}<tr><td>{{ r.name }}</td><td class="low">{{ r.stock_qty }}</td><td>{{ r.reorder_level }}</td></tr>{% endfor %}</table>{% else %}<p>Nothing is low on stock.</p>{% endif %}</section>
+<section><h2>Expiring within 15 days</h2>{% if exp %}<table><tr><th>Product</th><th>Expiry</th><th>In stock</th></tr>
+{% for r in exp %}<tr><td>{{ r.name }}</td><td class="low">{{ r.expiry_date }}</td><td>{{ r.stock_qty }}</td></tr>{% endfor %}</table>{% else %}<p>No products are close to expiry.</p>{% endif %}</section>{% endblock %}
